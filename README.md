@@ -4,6 +4,8 @@
 
 This repo contains code to publish a [Bicep module](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/modules) to a [Private Module Registry](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry).
 
+![diagram](static/diagram.png)
+
 ## Description
 
 This demo will publish modules under the [modules path](./modules) to a Bicep registry as defined in [bicepconfig.json](./bicepconfig.json). This is done using a [GitHub Actions workflow](./.github/workflows/bicep-publish.yml) and a [lightweight wrapper script](./.github/publish-modules.sh).
