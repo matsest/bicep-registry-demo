@@ -1,0 +1,10 @@
+{
+  "moduleAliases": {
+    "br": {
+      "demoRegistry": {
+        "registry": "brmxe923.azurecr.io",
+        "modulePath": "bicep/modules"
+      }
+    }
+  }
+}
