@@ -75,7 +75,7 @@ az ad sp create-for-rbac --name "bicep-registry-demo-ci" --role AcrPush \
 git add modules/storage/main.bicep
 git commit -m "storage module"
 git tag v1.1.0
-git push
+git push --tags
 ```
 
 This will trigger the bicep-publish workflow
