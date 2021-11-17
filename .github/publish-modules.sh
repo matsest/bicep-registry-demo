@@ -12,5 +12,5 @@ for MODULE in $MODULES; do
   MODULENAME=$(basename $(dirname $MODULE))
   VER=$(git describe --tags --abbrev=0)
   echo "Publishing module $MODULENAME:$VER [$MODULE]"
-  bicep publish --file $MODULE --target br:$REGISTRY/$MODULEPATH/$MODULENAME:$VER
+  bicep publish $MODULE --target br:$REGISTRY/$MODULEPATH/$MODULENAME:$VER
 done
