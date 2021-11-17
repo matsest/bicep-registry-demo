@@ -89,6 +89,7 @@ param location string = 'westeurope'
 git add modules/storage/main.bicep
 git commit -m "set allowed locations"
 git tag v1.1.0
+git push # push the commit
 git push --tags # push the commit with tags
 ```
 
