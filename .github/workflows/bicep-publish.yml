@@ -2,13 +2,13 @@ name: Bicep Module Publish
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - 'main'
   workflow_dispatch:
 
 jobs:
   publish:
-    if: github.ref == 'refs/heads/main'
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
 
