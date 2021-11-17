@@ -4,18 +4,18 @@
 
 This repo contains code to publish a [Bicep module](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/modules) to a [Private Module Registry](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry).
 
-![diagram](static/diagram.png)
-
 ## Description
 
 This demo will publish modules under the [modules path](./modules) to a Bicep registry as defined in [bicepconfig.json](./bicepconfig.json). This is done using a [GitHub Actions workflow](./.github/workflows/bicep-publish.yml) and a [lightweight wrapper script](./.github/publish-modules.sh).
 
 You will then be able to deploy a template that refers to this module from the registry :muscle:
 
+![diagram](static/diagram.png)
+
 ## Prerequisites
 
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-- Bicep (install with `az bicep install`)
+- Bicep (install with `az bicep install` - you will need `v0.4.1008` or newer)
 - An Azure subscription with Owner permissions
 - Permission to create a service principal in Azure AD
 
@@ -45,6 +45,7 @@ az acr create -g bicep-registry-demo -l westeurope -n <registry name> --sku basi
 
 1. Add your registry to bicepconfig.json
    -  Change the `registryName` to the unique name from the step above. The value should be `<registry name>.azurecr.io`.
+   - Learn more about the Bicep configuration file [here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-config).
 
 2. Create service principal with [AcrPush permissions](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-roles?tabs=azure-cli) to the container registry, and [add a secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) to your GitHub repository
 
@@ -95,9 +96,9 @@ git push # push the commit
 git push --tags # push the commit with tags
 ```
 
-This will trigger the bicep-publish workflow and publish the module to the registry.
+This will trigger the [bicep-publish workflow](./.github/workflows/bicep-publish.yml) and publish the module to the registry.
 
-> :exclamation: Note that each new tag pushed will trigger a new published version
+> :exclamation: Note that each new tag pushed will trigger a new published version.
 
 To see the published modules in the registry see [this](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry#view-files-in-registry).
 
@@ -120,6 +121,14 @@ az deployment group create -n registry-demo -g bicep-registry-demo -f ./demo/mai
 ```
 
 :heavy_check_mark: **Congratulations!** - you've successfully deployed a Bicep template that refers to a remote module in a private module registry!
+
+### Next steps
+
+To build upon this you can try:
+- Adding another module in the modules directory. The name of the directory will be the module name and it must have a `main.bicep` file within it.
+- Consuming the module from the registry in a another workflow to deploy resources
+  - You will need to set up a service principal that have [AcrPull permissions](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-roles?tabs=azure-cli) and permissions to deploy resources (Contributor or equivalent)
+- Add more robust versioning automation (e.g. always publish a `latest` version on push to main) and use [GitHub Releases](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#release) to publish specific versions
 
 ### Cleanup
 
