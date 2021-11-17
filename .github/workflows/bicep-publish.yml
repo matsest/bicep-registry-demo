@@ -22,4 +22,4 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Publish Bicep modules
-      run: ./github/publish-modules.sh
+      run: .github/publish-modules.sh
