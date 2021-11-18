@@ -43,8 +43,8 @@ az acr create -g bicep-registry-demo -l westeurope -n <registry name> --sku basi
 
 ### 3. Set up your GitHub repo
 
-1. Add your registry to [bicepconfig.json](./bicepconfig.json)
-   -  Change the `registryName` to the unique name from the step above. The value should be `<registry name>.azurecr.io`.
+1. Set your registry in [bicepconfig.json](./bicepconfig.json)
+   -  Change the `registryName` for the alias `demoRegistry` to the unique name from the step above. The value should be `<registry name>.azurecr.io`.
    - Learn more about the Bicep configuration file [here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-config).
 
 2. Create service principal with [AcrPush permissions](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-roles?tabs=azure-cli) to the container registry, and [add a secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) to your GitHub repository
