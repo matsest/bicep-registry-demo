@@ -43,7 +43,7 @@ az acr create -g bicep-registry-demo -l westeurope -n <registry name> --sku basi
 
 ### 3. Set up your GitHub repo
 
-1. Add your registry to bicepconfig.json
+1. Add your registry to [bicepconfig.json](./bicepconfig.json)
    -  Change the `registryName` to the unique name from the step above. The value should be `<registry name>.azurecr.io`.
    - Learn more about the Bicep configuration file [here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-config).
 
