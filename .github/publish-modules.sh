@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Note: This script is superseded by a pwsh equivalent in ./publish-modules.ps1
+
 ## Get registry settings from bicepconfig.json
 REGISTRY=$(cat bicepconfig.json | jq -r '.moduleAliases.br.demoRegistry.registry')
 MODULEPATH=$(cat bicepconfig.json | jq -r '.moduleAliases.br.demoRegistry.modulePath')

@@ -23,6 +23,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Publish Bicep modules
-      run: |
-        chmod +x .github/publish-modules.sh
-        .github/publish-modules.sh
+      env:
+        REGISTRYALIAS: demoRegistry
+      run: .github/publish-modules.ps1 -RegistryAliasName ${{ env. REGISTRYALIAS }}
+      shell: pwsh
