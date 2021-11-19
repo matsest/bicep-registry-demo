@@ -6,7 +6,7 @@ This repo contains code to publish a [Bicep module](https://docs.microsoft.com/e
 
 ## Description
 
-This demo will publish modules under the [modules path](./modules) to a Bicep registry as defined in [bicepconfig.json](./bicepconfig.json). This is done using a [GitHub Actions workflow](./.github/workflows/bicep-publish.yml) and a [lightweight wrapper script](./.github/publish-modules.sh).
+This demo will publish modules under the [modules path](./modules) to a Bicep registry as defined in [bicepconfig.json](./bicepconfig.json). This is done using a [GitHub Actions workflow](./.github/workflows/bicep-publish.yml) and a [wrapper script](./.github/publish-modules.ps1). The latest git tag will be used as the module version.
 
 You will then be able to deploy a template that refers to this module from the registry :muscle:
 
@@ -125,10 +125,10 @@ az deployment group create -n registry-demo -g bicep-registry-demo -f ./demo/mai
 ### Next steps
 
 To build upon this you can try:
-- Adding another module in the modules directory. The name of the directory will be the module name and it must have a `main.bicep` file within it.
+- Adding another module in the modules directory. The name of the directory will be the module name and it must have a `main.bicep` file within it. The workflow will parse all modules in the odules directory. Note that currently all modules will be deployed with the same version (git tag).
 - Consuming the module from the registry in a another workflow to deploy resources
   - You will need to set up a service principal that have [AcrPull permissions](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-roles?tabs=azure-cli) and permissions to deploy resources (Contributor or equivalent)
-- Add more robust versioning automation (e.g. always publish a `latest` version on push to main) and use [GitHub Releases](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#release) to publish specific versions
+- Add more robust versioning automation (e.g. always publish a `latest` version on push to main) and use [GitHub Releases](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#release) to publish specific versions, or add individual versioning of modules.
 
 ### Cleanup
 
