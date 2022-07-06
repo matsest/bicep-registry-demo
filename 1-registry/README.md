@@ -17,6 +17,8 @@ Set-AzContext -SubscriptionName "<subscription name>"
 
 ### 1. Create an Azure Container Registry instance with Azure Powershell
 
+To host our Bicep Module Registry we're going to set up an [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-intro) in a dedicated resource group.
+
 1. Create a resource group
 
 ```powershell
@@ -37,7 +39,7 @@ $registry = New-AzContainerRegistry -Name $registryName -ResourceGroupName "bice
 
 Find the registry url with:
 
-```
+```powershell
 $registry.LoginServer
 
 # <registryname>.azurecr.io
@@ -50,7 +52,7 @@ Open the file and set the correct registry value:
   "moduleAliases": {
     "br": {
       "demoRegistry": {
-        "registry": "<your registry url>",
+        "registry": "<your registry url>", // Change this value
         "modulePath": "bicep/modules"
       }
     }
@@ -60,7 +62,7 @@ Open the file and set the correct registry value:
 
 ### 3. Set up Azure AD service principals
 
-Todo: Explain why we want different creds
+To use the Bicep Module Registry we're going to set up two service principals. For a demo this might seem overkill, but this is to highlight the important difference between permissions on the registry. For the first principal we're going to assign it the [AcrPush](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#acrpush) role on the registry. For the other we're going to assign in the [AcrPull](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#acrpull) role on the registry. The credentials with the push permissions we want to protect (as we only want the main branch to be able to push new modules), while a separate pull credential can allow other branches to safely consume it. This is e.g. needed for building a bicep template that refers to a registry module.
 
 1. Create service principals and role assignments
 
@@ -85,7 +87,7 @@ New-AzRoleAssignment -ObjectId $spPull.Id `
 
 2. Add Federated Credentials for GitHub
 
-This step adds [federated credentials](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-powershell%2Clinux#use-the-azure-login-action-with-openid-connect) to use OpenID Connect to authenticate. This remove the need of maintaining (updating and rotating) a client secret in your GitHub repository.
+For our Github Actions workflows to be able to login to Azure and push/pull modules we need to set up some credentials. This step adds [federated credentials](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-powershell%2Clinux#use-the-azure-login-action-with-openid-connect) to use OpenID Connect to authenticate. This remove the need of maintaining (updating and rotating) a client secret in our GitHub repository.
 
 ```powershell
 #! Set this value to match your own repository!
@@ -109,6 +111,8 @@ New-AzADAppFederatedIdentityCredential -ApplicationObjectId $appPull.Id `
 ```
 
 3. Add secrets to Github repo
+
+Even though we're not adding client secrets to our GitHub repository we still need to add some repository secrets that tell GitHub Actions which service principal, subscription and tenant to use.
 
 If you have the [GitHub CLI](https://cli.github.com/manual/) installed you can do this step from the command line. If you do not have it you can [add the secrets manually](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-powershell%2Clinux#create-github-secrets) in the browser.
 
