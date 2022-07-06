@@ -5,6 +5,10 @@ param (
   [string]
   $BicepConfigFile = "$PSScriptRoot/../bicepconfig.json",
   [Parameter()]
+  [ValidateScript( { Test-Path $_ })]
+  [string]
+  $ModulesPath = "$PSScriptRoot/../2-publish/modules",
+  [Parameter()]
   [string]
   $RegistryAliasName = 'demoRegistry'
 )

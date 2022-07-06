@@ -1,0 +1,26 @@
+name: Bicep Module Consume
+
+on:
+  push:
+    paths:
+      - 3-consume/**.bicep
+      - 3-consume/**.parameters.json
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  consume:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout code
+      - uses: actions/checkout@v3
+
+      - name: "Azure Login"
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.ACR_PULL_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}

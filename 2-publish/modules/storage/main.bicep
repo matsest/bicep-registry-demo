@@ -18,7 +18,7 @@ param location string = resourceGroup().location
 
 @metadata({
   schema: [
-      'string'
+    'string'
   ]
 })
 param ipRules array = []
