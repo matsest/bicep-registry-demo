@@ -1,9 +1,9 @@
 [CmdletBinding()]
 param (
-  [Parameter()]
+  [Parameter(Mandatory)]
   [ValidateScript( { Test-Path $_ })]
   [string]
-  $ModulesPath = "$PSScriptRoot/../2-publish/modules"
+  $ModulesPath
 )
 
 # Defaults

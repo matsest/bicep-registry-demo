@@ -1,14 +1,11 @@
-name: Bicep Module Publish
+name: Bicep Module Build
 
 on:
   push:
-    tags:
-      - "*"
-    branches:
-      - main
     paths:
-      - 2-publish/**.bicep
-      - .github/workflows/bicep-publish.yml
+      - "**.bicep"
+    branches-ignore:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -22,18 +19,14 @@ jobs:
     steps:
       # Checkout code
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # get repo with tags
 
       - name: "Azure Login"
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.ACR_PUSH_CLIENT_ID }}
+          client-id: ${{ secrets.ACR_PULL_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Build Bicep modules
-        run: .github/build-modules.ps1 -ModulesPath ./2-publish/
+        run: .github/build-modules.ps1 -ModulesPath ./
         shell: pwsh
-
-      # TODO: publish
