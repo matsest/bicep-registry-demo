@@ -1,6 +1,4 @@
-@minLength(3)
-@maxLength(11)
-param storagePrefix string
+param uniqueStorageName string = '$stg${uniqueString(resourceGroup().id)}'
 
 @allowed([
   'Standard_LRS'
@@ -14,21 +12,8 @@ param storagePrefix string
 ])
 param storageSKU string = 'Standard_LRS'
 
+// should this be restricted?
 param location string = resourceGroup().location
-
-@metadata({
-  schema: [
-    'string'
-  ]
-})
-param ipRules array = []
-
-var uniqueStorageName = '${storagePrefix}${uniqueString(resourceGroup().id)}'
-
-var ipRulesVar = [for ipRule in ipRules: {
-  action: 'Allow'
-  value: ipRule
-}]
 
 resource stg 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   name: uniqueStorageName
@@ -38,15 +23,11 @@ resource stg 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   }
   kind: 'StorageV2'
   properties: {
-    supportsHttpsTrafficOnly: true
     allowBlobPublicAccess: false
     minimumTlsVersion: 'TLS1_2'
-    networkAcls: {
-      defaultAction: 'Deny'
-      bypass: 'AzureServices'
-      ipRules: ipRulesVar
-    }
   }
 }
 
-output storageEndpoint object = stg.properties.primaryEndpoints
+output id string = stg.id
+output name string = stg.name
+output endpoint object = stg.properties.primaryEndpoints
