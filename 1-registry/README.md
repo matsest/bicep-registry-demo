@@ -104,8 +104,8 @@ New-AzADAppFederatedIdentityCredential -ApplicationObjectId $appPull.Id `
   -Name 'AcrPull' `
   -Audience 'api://AzureADTokenExchange' `
   -Issuer 'https://token.actions.githubusercontent.com' `
-  -Subject "repo:$githubUser/bicep-registry-demo" `
-  -Description "Bicep Module Registry Demo - Push"
+  -Subject "repo:$githubUser/bicep-registry-demo:environment:Azure" `
+  -Description "Bicep Module Registry Demo - Pull"
 ```
 
 3. Add secrets to Github repo

@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   consume:
+    environment: Azure
     runs-on: ubuntu-latest
     steps:
       # Checkout code
