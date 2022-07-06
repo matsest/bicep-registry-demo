@@ -5,6 +5,7 @@ on:
     paths:
       - 3-consume/**.bicep
       - 3-consume/**.parameters.json
+      - .github/workflows/bicep-consume.yml
   workflow_dispatch:
 
 permissions:
@@ -25,3 +26,7 @@ jobs:
           client-id: ${{ secrets.ACR_PULL_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build Bicep modules
+        run: .github/build-modules.ps1 -ModulesPath ./3-consume/
+        shell: pwsh
