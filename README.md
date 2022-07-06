@@ -20,6 +20,7 @@ For each section there is an accompanying README that adds more details and step
 ## Prerequisites
 
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (2.38+)
+- [Azure PowerShell](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps) (8.0+)
 - Bicep (install with `az bicep install` or upgrade with `az bicep upgrade`) (0.8.2+)
 - An Azure subscription with Owner permissions
 - Permission to set up an service principal in Azure AD
@@ -38,9 +39,13 @@ For each section there is an accompanying README that adds more details and step
 
 Delete the resource group and the resources in in by running:
 
-```bash
-az group delete -n bicep-registry-demo
+```powershell
+Remove-AzResourceGroup -Name "bicep-registry-demo"
 ```
+
+Delete the created service principals:
+
+TODO
 
 ## Learn more
 
