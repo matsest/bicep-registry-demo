@@ -2,15 +2,11 @@
 
 ## Description
 
-So now we have a private module registry in place
+After completing [the first part](../1-registry/README.md) we now have a Bicep Module Registry set up. Time to publish some modules!
 
-This demo will publish modules under the [modules path](./modules) to a Bicep registry as defined in [bicepconfig.json](./bicepconfig.json). This is done using a [GitHub Actions workflow](./.github/workflows/bicep-publish.yml) and a [wrapper script](./.github/publish-modules.ps1). The latest git tag will be used as the module version.
+This part will publish Bicep modules under the [modules path](./modules) to a Bicep registry as defined in [bicepconfig.json](../bicepconfig.json). This is done using a [GitHub Actions workflow](./.github/workflows/bicep-publish.yml) and a [wrapper script](../.github/publish-modules.ps1). The latest git tag will be used as the module version.
 
-Y
-
-## Deploy
-
-Do x
+## Steps
 
 1. Modify the template in modules/storage/main.bicep.
    - Example: Update the `location` parameter to restrict allowed values
@@ -27,13 +23,13 @@ param location string = 'westeurope'
 
 ```bash
 git add modules/storage/main.bicep
-git commit -m "set allowed locations"
-git tag v1.1.0
+git commit -m "fix: set allowed locations"
+git tag 1.1.0
 git push # push the commit
 git push --tags # push the commit with tags
 ```
 
-This will trigger the [bicep-publish workflow](./.github/workflows/bicep-publish.yml) and publish the module to the registry.
+This will trigger the [bicep-publish workflow](../.github/workflows/bicep-publish.yml) and publish the module to the registry.
 
 > :exclamation: Note that each new tag pushed will trigger a new published version.
 

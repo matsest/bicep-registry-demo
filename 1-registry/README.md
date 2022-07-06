@@ -52,8 +52,7 @@ Open the file and set the correct registry value:
   "moduleAliases": {
     "br": {
       "demoRegistry": {
-        "registry": "<your registry url>", // Change this value
-        "modulePath": "bicep/modules"
+        "registry": "<your registry url>" // Change this value
       }
     }
   }
