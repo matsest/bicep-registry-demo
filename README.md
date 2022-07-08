@@ -40,12 +40,21 @@ For each section there is an accompanying README that adds more details and step
 Delete the resource group and the resources in in by running:
 
 ```powershell
+# Delete resource groups
 Remove-AzResourceGroup -Name "bicep-registry-demo"
+Remove-AzResourceGroup -Name "bicep-workload-demo"
 ```
 
-Delete the created service principals:
+Delete the service principals:
 
-TODO
+```powershell
+# Delete service principals
+Remove-AzAdServicePrincipal -DisplayName "bicep-registry-demo-ci-pull"
+Remove-AzADApplication -DisplayName "bicep-registry-demo-ci-pull"
+
+Remove-AzAdServicePrincipal -DisplayName "bicep-registry-demo-ci-push"
+Remove-AzADApplication -DisplayName "bicep-registry-demo-ci-push"
+```
 
 ## Learn more
 
