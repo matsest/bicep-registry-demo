@@ -42,11 +42,9 @@ This will trigger the [bicep-publish workflow](../.github/workflows/bicep-publis
 
 > :exclamation: Note that each new tag pushed will trigger a new published version.
 
-> TODO: add image of successful workflow
+To see the published modules in the registry see [this guide](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry#view-files-in-registry). The module will be listed as a repository in the registry:
 
-To see the published modules in the registry see [this](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry#view-files-in-registry).
-
-> TODO: add image of registry
+![registry](../static/2-registry.png)
 
 ## Next Step
 
