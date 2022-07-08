@@ -40,4 +40,5 @@ jobs:
           template: 3-consume/main.bicep
 
       - name: Print Container Apps URL
+        if: github.event == 'workflow_dispatch' || github.ref_name == 'main'
         run: echo ${{ steps.deploy.outputs.url }}
