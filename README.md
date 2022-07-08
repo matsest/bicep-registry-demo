@@ -35,27 +35,6 @@ For each section there is an accompanying README that adds more details and step
 4. [Publish a module to the registry](./2-publish/README.md)
 5. [Consume modules from private and public registry](./3-consume/README.md)
 
-### Cleanup
-
-Delete the resource group and the resources in in by running:
-
-```powershell
-# Delete resource groups
-Remove-AzResourceGroup -Name "bicep-registry-demo"
-Remove-AzResourceGroup -Name "bicep-workload-demo"
-```
-
-Delete the service principals:
-
-```powershell
-# Delete service principals
-Remove-AzAdServicePrincipal -DisplayName "bicep-registry-demo-ci-pull"
-Remove-AzADApplication -DisplayName "bicep-registry-demo-ci-pull"
-
-Remove-AzAdServicePrincipal -DisplayName "bicep-registry-demo-ci-push"
-Remove-AzADApplication -DisplayName "bicep-registry-demo-ci-push"
-```
-
 ## Learn more
 
 - [Bicep overview](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview)
@@ -63,3 +42,7 @@ Remove-AzADApplication -DisplayName "bicep-registry-demo-ci-push"
 - [Bicep module registry docs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/private-module-registry)
 - [Bicep on Microsoft Learn](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/learn-bicep)
   - **Recommended**: [Share Bicep modules by using private registries](https://docs.microsoft.com/en-us/learn/modules/share-bicep-modules-using-private-registries/)
+
+## License
+
+[MIT License](./LICENSE)

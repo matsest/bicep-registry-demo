@@ -92,6 +92,25 @@ Push the changes above to the main branch to re-trigger the workflow with this a
 
 ## Next Step
 
-:heavy_check_mark: **Congratulations!** - you've successfully deployed a Bicep template that refers to a remote module in a private module registry!
+:heavy_check_mark: **Congratulations!** - you've completed all three steps and successfully deployed a Bicep template that refers to a remote module in a private module registry!
 
 See the [learn more section in the main README](../README.md#learn-more) to continue your Bicep learning journey!
+
+### Clean up
+
+If you want to delete the created resources from this demo, you can run:
+
+```powershell
+# Delete resource groups
+Remove-AzResourceGroup -Name "bicep-registry-demo"
+Remove-AzResourceGroup -Name "bicep-workload-demo"
+```
+
+```powershell
+# Delete service principals
+Remove-AzAdServicePrincipal -DisplayName "bicep-registry-demo-ci-pull"
+Remove-AzADApplication -DisplayName "bicep-registry-demo-ci-pull"
+
+Remove-AzAdServicePrincipal -DisplayName "bicep-registry-demo-ci-push"
+Remove-AzADApplication -DisplayName "bicep-registry-demo-ci-push"
+```
