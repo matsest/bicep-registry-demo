@@ -17,7 +17,6 @@ jobs:
     environment: Azure
     runs-on: ubuntu-latest
     steps:
-      # Checkout code
       - uses: actions/checkout@v3
 
       - name: "Azure Login"
@@ -30,3 +29,15 @@ jobs:
       - name: Build Bicep modules
         run: .github/build-modules.ps1 -ModulesPath ./3-consume/
         shell: pwsh
+
+      - name: Deploy Container Apps
+        if: github.event == 'workflow_dispatch' || github.ref_name == 'main'
+        id: deploy
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: bicep-workload-demo
+          template: 3-consume/main.bicep
+
+      - name: Print Container Apps URL
+        run: echo ${{ steps.deploy.outputs.url }}
