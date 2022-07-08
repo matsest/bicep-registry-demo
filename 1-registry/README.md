@@ -68,11 +68,21 @@ Open the file and set the correct registry value:
 }
 ```
 
+4. Commit and push the changes:
+
+```bash
+git add bicepconfig.json
+git commit -m "fix: update registry"
+git push
+```
+
 ### 3. Set up Azure AD service principals
 
-To use the Bicep Module Registry we're going to set up two service principals. For a demo this might seem overkill, but this is to highlight the usage of apppropriate role assignments (permissions) in Azure.
+To use the Bicep Module Registry we're going to set up two service principals. This is because we are going to run two different workflows with two separate permissions.
 
-For the first principal we're going to assign it the [AcrPush](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#acrpush) role on the registry. For the other we're going to assign in the [AcrPull](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#acrpull) role on the registry, in addition to [Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor) on the workload resource group. The credentials with the push permissions we want to protect (as we only want the main branch to be able to push new modules), while a separate pull credential can allow other branches to consume modules for build steps.
+For the first principal we're going to assign it the [AcrPush](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#acrpush) role on the registry. For the second we're going to assign in the [AcrPull](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#acrpull) role on the registry, in addition to [Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor) on the workload resource group.
+
+The credential with the push permissions we want to protect and limit to only the main branch being able to push new modules. For the other pull credential we allow other branches to use this to consume modules for build steps.
 
 1. Create service principals and role assignments
 
