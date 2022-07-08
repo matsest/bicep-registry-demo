@@ -12,7 +12,6 @@ param uniqueStorageName string = '$stg${uniqueString(resourceGroup().id)}'
 ])
 param storageSKU string = 'Standard_LRS'
 
-// should this be restricted?
 param location string = resourceGroup().location
 
 resource stg 'Microsoft.Storage/storageAccounts@2021-06-01' = {

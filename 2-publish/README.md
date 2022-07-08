@@ -13,13 +13,17 @@ To start of we have two modules:
 
 ## Steps
 
-1. Modify the template in [modules/storage/main.bicep](./modules/storage/main.bicep).
+Due to the [limited regional availabilty of Azure Container Apps](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=container-apps&regions=all) we want to restrict which regions this module can be used in. As an example we restrict the allowed locations to only those in the European geography.
+
+1. Modify the template in [modules/containerapp/main.bicep](./modules/containerapp/main.bicep).
    - Example: Update the `location` parameter to restrict allowed values
 
 ```bicep
 @allowed([
   'northeurope'
   'westeurope'
+  'germanywestcentral'
+  'uksouth'
 ])
 param location string = 'westeurope'
 ```
@@ -27,11 +31,11 @@ param location string = 'westeurope'
 2. Commit, tag and push changes
 
 ```bash
-git add modules/storage/main.bicep
+git add 2-publish/modules/containerapp/main.bicep
 git commit -m "fix: set allowed locations"
 git tag 1.1.0
 git push # push the commit
-git push --tags # push the commit with tags
+git push --tags # push the tags
 ```
 
 This will trigger the [bicep-publish workflow](../.github/workflows/bicep-publish.yml) and publish the module to the registry.

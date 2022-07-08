@@ -1,4 +1,6 @@
 param environmentName string
+
+// should this be restricted?
 param location string = resourceGroup().location
 
 var logAnalyticsWorkspaceName = 'logs-${environmentName}'
