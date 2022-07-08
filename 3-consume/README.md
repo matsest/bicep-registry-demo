@@ -4,33 +4,38 @@
 
 After completing [the second part](../2-publish/README.md) we now have a modules published to our Bicep Module Registry. From the [first part](../1-registry/README.md) we also have a dedicated resource group for workload deployments (`bicep-workload-demo`) and a service principal set up with permissions to pull from the registry and deploy to the workload resource group.
 
-This part will consume those modules for a template deployment. The [template we are going to use](./main.bicep) is consuming the [containerapp module](../2-publish/modules/containerapp/main.bicep) from the previous step.
+This part will consume modules from the registry for a template deployment. The [template we are going to use](./main.bicep) is consuming the [containerapp module](../2-publish/modules/containerapp/main.bicep) from the previous step.
 
-We will trigger a GitHub Actions workflow that deploys the template referring to the published module.
+We will trigger a GitHub Actions workflow that deploys the template.
 
 ## Steps
 
 ### Prerequisites
 
-To enable the relevant resource provider in your subscription run the following:
+To enable the needed resource provider in your subscription run the following:
 
 ```powershell
 Register-AzResourceProvider -ProviderNameSpace "Microsoft.App"
 ```
 
-### 1. Deploy from the command line
+### 1. Validate template from the command line
 
 Note that this module refers to version `1.1.0`. If you have published another version than this, please update the value in [the template](./main.bicep).
 
-1. Deploy the template by running the following command:
+1. Valide the deployment by running the following command:
 
 ```bash
-New-AzResourceGroupDeployment -Name "containerapp" -ResourceGroupName "bicep-workload-demo" -TemplateFile "./3-consume/main.bicep"
+New-AzResourceGroupDeployment -Name "containerapp" `
+    -ResourceGroupName "bicep-workload-demo" `
+    -TemplateFile "./3-consume/main.bicep" `
+    -WhatIf -WhatIfResultFormat ResourceIdOnly
 ```
 
-> :warning: This deployment will run with your users' permissions
+This command will run a [What-if deployment](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-what-if?tabs=azure-powershell%2CCLI) that list the resources that _will_ be created if deployment is run. This command also valides the template deployment and parameter values.
 
-### 2. Deploy from GitHub Actions
+![whatif](../static/3-whatif.png)
+
+### 2. Deploy template from GitHub Actions
 
 To verify that our GitHub repository and service principal is set up correctly, we're going to trigger the deployment from GitHub Actions.
 
