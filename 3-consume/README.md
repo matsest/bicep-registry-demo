@@ -2,7 +2,7 @@
 
 ## Description
 
-After completing [the second part](../2-publish/README.md) we now have a modules published to our Bicep Module Registry. From the [first part](../1-registry/README.md) we also have a dedicated resource group for workload deployments (`bicep-workload-demo`) and a service principal set up with permissions to pull from the registry and deploy to the workload resource group.
+After completing [the second part](../2-publish/README.md) we now have a modules published to our Bicep Module Registry. From the [first part](../1-registry/README.md) we also have a dedicated resource group for workload deployments (`bicep-workload-demo`) and a service principal set up with permissions to pull from the registry and deploy to a workload resource group.
 
 This part will consume modules from the registry for a template deployment. The [template we are going to use](./main.bicep) is consuming the [containerapp module](../2-publish/modules/containerapp/main.bicep) from the previous step.
 
@@ -21,6 +21,22 @@ Register-AzResourceProvider -ProviderNameSpace "Microsoft.App"
 ### 1. Validate template from the command line
 
 Note that this module refers to version `1.1.0`. If you have published another version than this, please update the value in [the template](./main.bicep).
+
+```bicep
+param environmentName string = 'demo-aca'
+param location string = resourceGroup().location
+
+param dateNow string = utcNow()
+module containerapp 'br/demoRegistry:containerapp:1.1.0' = {
+  name: 'containerapp-${dateNow}'
+  params: {
+    environmentName: environmentName
+    location: location
+  }
+}
+
+output url string = containerapp.outputs.url
+```
 
 1. Valide the deployment by running the following command:
 
