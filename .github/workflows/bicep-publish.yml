@@ -3,7 +3,7 @@ name: Bicep Module Publish
 on:
   push:
     tags:
-      - "*"
+      - "*.*.*"
     branches:
       - main
     paths:
