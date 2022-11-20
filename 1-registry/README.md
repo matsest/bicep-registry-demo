@@ -88,6 +88,8 @@ To use the Bicep Module Registry we're going to set up two service principals. T
 
 For the first principal we're going to assign it the [AcrPush](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#acrpush) role on the registry. For the second we're going to assign in the [AcrPull](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#acrpull) role on the registry, in addition to [Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor) on the workload resource group.
 
+> :bulb: This would typically be setup with more than one repository and subscription, where one repository is the source of the modules (with push permissions) and the others would act as workload deployment repositories and deploy to other subscriptions. Since we're mimicking this behaviour within one repository and subscription we're setting up two environments, two resource groups and two service principals to demonstrate the principle of least privilege.
+
 1. Create service principals and role assignments
 
 ```powershell
@@ -117,8 +119,6 @@ New-AzRoleAssignment -ObjectId $spPull.Id `
 2. Add Federated Credentials for GitHub
 
 For our Github Actions workflows to be able to login to Azure and push/pull modules we need to set up some credentials. This step adds [federated credentials](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-powershell%2Clinux#use-the-azure-login-action-with-openid-connect) to use OpenID Connect to authenticate. This remove the need of maintaining (updating and rotating) a client secret in our GitHub repository.
-
-The service principal with the push permissions we want to protect and limit to only the main branch being able to push new modules. For the other pull service principal we allow all branches to use this to consume modules. To enforce this we are utilizing [Environments in GitHub Actions](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
 
 ```powershell
 #! Set this value to match your own repository!
