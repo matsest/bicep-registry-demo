@@ -34,6 +34,9 @@ if (!$Version) {
   exit 1
 }
 
+# Check out tag version
+git checkout $Version
+
 # Read modules from modules directory
 $modules = Get-ChildItem -Path "$ModulesPath" -Filter "main.bicep" -Recurse -File
 $errors = 0

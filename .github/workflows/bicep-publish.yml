@@ -10,6 +10,10 @@ on:
       - 2-publish/**.bicep
       - .github/workflows/bicep-publish.yml
   workflow_dispatch:
+      version:
+        description: 'Version to publish. Must be a valid git tag.'
+        required: true
+        type: string
 
 permissions:
   id-token: write
@@ -36,4 +40,12 @@ jobs:
         run: .github/build-modules.ps1 -ModulesPath ./2-publish/
         shell: pwsh
 
-      # TODO: publish
+      - name: Publish Bicep modules (push)
+        if: github.event == push
+        run: .github/publish-modules.ps1 -ModulesPath ./2-publish -AddLatest
+        shell: pwsh
+
+      - name: Publish Bicep modules (dispatch)
+        if: github.event == workflow_dispatch
+        run: .github/publish-modules.ps1 -ModulesPath ./2-publish -Version ${{ inputs.version }}
+        shell: pwsh
