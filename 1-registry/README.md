@@ -41,7 +41,7 @@ $workloadResourceGroup = New-AzResourceGroup -Name "bicep-workload-demo" -Locati
 
 ```powershell
 $registryName = "" #example: 'br<your initials><4 digits>'
-$registry = New-AzContainerRegistry -Name $registryName -ResourceGroupName "bicep-registry-demo"  -Location "westeurope" -Sku "Basic"
+$registry = New-AzContainerRegistry -Name $registryName -ResourceGroupName $resourceGroup.ResourceGroupName  -Location "westeurope" -Sku "Basic"
 ```
 
 3. Add the registry url to the [bicepconfig.json](../bicepconfig.json) in your clone
@@ -68,11 +68,17 @@ Open the file and set the correct registry value:
 }
 ```
 
-4. Commit and push the changes:
+4. Add the registry value to the [publish workflow](../.github/workflows/bicep-publish.yml):
+
+```pwsh
+$Registry = 'brmxe923.azurecr.io', # Change this value
+```
+
+5. Commit and push the changes:
 
 ```bash
-git add bicepconfig.json
-git commit -m "fix: update registry"
+git add bicepconfig.json .github/
+git commit -m "fix: update registry value"
 git push
 ```
 
