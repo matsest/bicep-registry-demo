@@ -40,7 +40,7 @@ output url string = containerapp.outputs.url
 
 1. Valide the deployment by running the following command:
 
-```bash
+```powershell
 New-AzResourceGroupDeployment -Name "containerapp" `
     -ResourceGroupName "bicep-workload-demo" `
     -TemplateFile "./3-consume/main.bicep" `
