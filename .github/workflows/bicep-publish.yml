@@ -22,7 +22,6 @@ permissions:
 
 jobs:
   publish:
-    environment: Azure
     runs-on: ubuntu-latest
     steps:
       # Checkout code
