@@ -125,7 +125,7 @@ For our Github Actions workflows to be able to login to Azure and push/pull modu
 $githubUser = "matsest"
 
 # Add push credentials (only available to main branch)
-New-AzADAppFederatedIdentityCredential -ApplicationObjectId $appPush.Id `
+New-AzADAppFederatedCredential -ApplicationObjectId $appPush.Id `
   -Name 'AcrPush' `
   -Audience 'api://AzureADTokenExchange' `
   -Issuer 'https://token.actions.githubusercontent.com' `
@@ -133,7 +133,7 @@ New-AzADAppFederatedIdentityCredential -ApplicationObjectId $appPush.Id `
   -Description "Bicep Module Registry Demo - Push"
 
 # Add pull credentials (available to all branches)
-New-AzADAppFederatedIdentityCredential -ApplicationObjectId $appPull.Id `
+New-AzADAppFederatedCredential -ApplicationObjectId $appPull.Id `
   -Name 'AcrPull' `
   -Audience 'api://AzureADTokenExchange' `
   -Issuer 'https://token.actions.githubusercontent.com' `
