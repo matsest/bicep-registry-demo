@@ -23,6 +23,8 @@ jobs:
   publish:
     environment: Azure-Push
     runs-on: ubuntu-latest
+    env:
+      ACR_REGISTRY: ${{ secrets.ACR_REGISTRY }}
     steps:
       # Checkout code
       - uses: actions/checkout@v3

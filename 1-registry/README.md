@@ -68,16 +68,10 @@ Open the file and set the correct registry value:
 }
 ```
 
-4. Add the registry value to the [publish workflow](../.github/workflows/bicep-publish.yml):
-
-```pwsh
-$Registry = 'brmxe923.azurecr.io', # Change this value
-```
-
 5. Commit and push the changes:
 
 ```bash
-git add bicepconfig.json .github/
+git add bicepconfig.json
 git commit -m "fix: update registry value"
 git push
 ```
@@ -143,17 +137,19 @@ New-AzADAppFederatedCredential -ApplicationObjectId $appPull.Id `
 
 3. Add secrets to Github repo
 
-Even though we're not adding client secrets to our GitHub repository we still need to add some repository secrets that tell GitHub Actions which service principal, subscription and tenant to use.
+Even though we're not adding client secrets to our GitHub repository we still need to add some repository secrets that tell GitHub Actions which registry, service principal, subscription and tenant to use.
 
 If you have the [GitHub CLI](https://cli.github.com/manual/) installed you can do this step from the command line. If you do not have it you can [add the secrets manually](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-powershell%2Clinux#create-github-secrets) in the browser.
 
 ```powershell
+$registryUrl = $registry.LoginServer
 $pushClientId = $appPush.AppId
 $pullClientId = $appPull.AppId
 $subscriptionId = (Get-AzContext).Subscription.Id
 $tenantId = (Get-AzContext).Subscription.TenantId
 
 # Continue if you have GitHub CLI
+gh secret set ACR_REGISTRY --body "$registryUrl"
 gh secret set AZURE_TENANT_ID --body "$tenantId"
 gh secret set AZURE_SUBSCRIPTION_ID --body "$subscriptionId"
 gh secret set ACR_PUSH_CLIENT_ID --body "$pushClientId" --env Azure-Push

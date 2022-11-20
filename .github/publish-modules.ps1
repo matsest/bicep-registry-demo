@@ -6,7 +6,7 @@ param (
   $ModulesPath = "$PSScriptRoot/../2-publish/modules",
   [Parameter()]
   [string]
-  $Registry = 'brmxe923.azurecr.io',
+  $Registry = $env:ACR_REGISTRY,
   [Parameter()]
   [string]
   $Version = $(git describe --tags --abbrev=0),
