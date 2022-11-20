@@ -76,14 +76,14 @@ Bicep also offers a [public registry of official modules](https://github.com/Azu
 To deploy this, add the following to [.github/workflows/bicep-consume.yml](../.github/workflows/bicep-consume.yml):
 
 ```yaml
-- name: Deploy VNET from Bicep Public Registry
-  if: github.event == 'workflow_dispatch' || github.ref_name == 'main'
-  id: deploy-vnet
-  uses: azure/arm-deploy@v1
-  with:
-    subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-    resourceGroupName: bicep-workload-demo
-    template: 3-consume/bonus.bicep
+      - name: Deploy VNET from Bicep Public Registry
+        if: github.event == 'workflow_dispatch' || github.ref_name == 'main'
+        id: deploy-vnet
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: bicep-workload-demo
+          template: 3-consume/bonus.bicep
 ```
 
 > :warning: Make sure to match the indentation of the other steps in the workflow file.
