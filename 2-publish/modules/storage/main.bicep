@@ -14,7 +14,7 @@ param storageSKU string = 'Standard_LRS'
 
 param location string = resourceGroup().location
 
-resource stg 'Microsoft.Storage/storageAccounts@2021-06-01' = {
+resource stg 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: uniqueStorageName
   location: location
   sku: {
