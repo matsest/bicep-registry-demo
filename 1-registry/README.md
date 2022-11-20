@@ -110,6 +110,7 @@ New-AzRoleAssignment -ObjectId $spPull.Id `
   -RoleDefinitionName "AcrPull" `
   -Scope $registry.Id
 
+# Add deploy permissions to the workload resource group
 New-AzRoleAssignment -ObjectId $spPull.Id `
   -RoleDefinitionName Contributor `
   -ResourceGroupName $workloadResourceGroup.ResourceGroupName

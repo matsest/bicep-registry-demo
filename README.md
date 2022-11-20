@@ -11,13 +11,9 @@ The repo contains a demo to showcase how to work with a private [Bicep Module Re
 2. :arrow_up: Publishing a module to a registry
 3. :arrow_down: Deploy resources by consuming modules from a private and public registry
 
-All of these steps will be done first from your local client, then through [GitHub Actions](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell).
+For each section there is an accompanying README that adds more details. The steps makes use of [GitHub Actions](https://docs.github.com/en/actions) to push and pull from the registry, as well as for deploying templates.
 
-For each section there is an accompanying README that adds more details. The steps makes use of GitHub Actions to push and pull from the registry, as well as for deploying templates.
-
-> TODO: update diagram to showcase parts
-
-![diagram](static/diagram.png)
+![diagram](static/bicep-registry-demo.png)
 
 ## Prerequisites
 
