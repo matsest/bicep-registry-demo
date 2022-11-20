@@ -3,10 +3,16 @@ param (
   [Parameter()]
   [ValidateScript( { Test-Path $_ })]
   [string]
-  $BicepConfigFile = "$PSScriptRoot/../bicepconfig.json",
+  $ModulesPath = "$PSScriptRoot/../2-publish/modules",
   [Parameter()]
   [string]
-  $RegistryAliasName = 'demoRegistry'
+  $Registry = 'brmxe923.azurecr.io',
+  [Parameter()]
+  [string]
+  $Version = $(git describe --tags --abbrev=0),
+  [Parameter(HelpMessage = '-AddLatest will publish the latest tag for each module in addition to -Version value')]
+  [switch]
+  $AddLatest
 )
 
 $ErrorActionPreference = 'Stop'
@@ -20,49 +26,50 @@ else {
   Write-Host "Using $(bicep --version) `n"
 }
 
-# Validate Bicep configuration file
-If (!(Get-Content $BicepConfigFile -Raw | Select-String $RegistryAliasName -Quiet)) {
-  Write-Warning "The registry alias $RegistryAliasName was not found in the Bicep configuration file."
-  exit 1
-}
-
-# Get registry settings from Bicep configuration files
-$registry = (Get-Content $BicepConfigFile -Raw | ConvertFrom-Json).moduleAliases.br.$RegistryAliasName.registry
-$modulePath = (Get-Content $BicepConfigFile -Raw | ConvertFrom-Json).moduleAliases.br.$RegistryAliasName.modulePath
-
-if (!$registry -or !$modulePath) {
-  Write-Warning "Could not parse configuration from the Bicep configuration file."
-  exit 1
-}
-else {
-  Write-Host "Publishing to $RegistryAliasName [$registry/$modulePath]"
-}
+Write-Host "Publishing to $Registry"
 
 # Find git version to publish modules for
-# TODO: individual versioning of modules (reconsider versioning after bicep v0.5)
-# TODO: Do not republish already published modules (will be supported in Bicep v0.5)
-$version = & git describe --tags --abbrev=0
-if (($LASTEXITCODE -ne 0) -or (!$version)) {
+if (!$Version) {
   Write-Warning "Could not determine git tag to use for version"
   exit 1
 }
 
+# Check out tag version
+git checkout $Version
+
 # Read modules from modules directory
-$modules = Get-ChildItem -Path "$PSScriptRoot/../modules" -Filter "main.bicep" -Recurse
+$modules = Get-ChildItem -Path "$ModulesPath" -Filter "main.bicep" -Recurse -File
 $errors = 0
 
 foreach ($module in $modules) {
   $moduleName = $module.Directory.Name
   $file = $module.FullName | Resolve-Path -Relative
-  Write-Host "  - Publishing module $($moduleName):$($version) [$($file)]"
-  bicep publish $module.FullName --target "br:$($registry)/$($modulePath)/$($moduleName):$($version)"
+
+  # Publish tag version
+  # TODO: Do not republish already published versioned modules (will be supported in later version)
+  Write-Host "- Publishing module $($moduleName):$($Version) [$($file)]"
+  bicep publish $module.FullName --target "br:$($Registry)/$($moduleName):$($Version)"
   if ($LASTEXITCODE -ne 0) {
     Write-Warning "Failed to publish module!"
     $errors += 1
   }
+  else {
+    Write-Host -ForegroundColor Green "  OK"
+  }
+  if ($AddLatest.IsPresent) {
+    Write-Host "- Publishing 'latest' tag"
+    bicep publish $module.FullName --target "br:$($Registry)/$($moduleName):latest"
+    if ($LASTEXITCODE -ne 0) {
+      Write-Warning "Failed to publish module!"
+      $errors += 1
+    }
+    else {
+      Write-Host -ForegroundColor Green "  OK"
+    }
+  }
 }
 
 if ($errors -gt 0) {
-  Write-Warning "Job completed with $errors errors. Please revise!"
+  Write-Warning "Publishing completed with $errors errors. Please revise!"
   exit 1
 }
