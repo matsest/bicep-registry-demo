@@ -88,8 +88,6 @@ To use the Bicep Module Registry we're going to set up two service principals. T
 
 For the first principal we're going to assign it the [AcrPush](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#acrpush) role on the registry. For the second we're going to assign in the [AcrPull](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#acrpull) role on the registry, in addition to [Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor) on the workload resource group.
 
-The credential with the push permissions we want to protect and limit to only the main branch being able to push new modules. For the other pull credential we allow other branches to use this to consume modules for build steps.
-
 1. Create service principals and role assignments
 
 ```powershell
@@ -120,11 +118,13 @@ New-AzRoleAssignment -ObjectId $spPull.Id `
 
 For our Github Actions workflows to be able to login to Azure and push/pull modules we need to set up some credentials. This step adds [federated credentials](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-powershell%2Clinux#use-the-azure-login-action-with-openid-connect) to use OpenID Connect to authenticate. This remove the need of maintaining (updating and rotating) a client secret in our GitHub repository.
 
+The service principal with the push permissions we want to protect and limit to only the main branch being able to push new modules. For the other pull service principal we allow all branches to use this to consume modules. To enforce this we are utilizing [Environments in GitHub Actions](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
+
 ```powershell
 #! Set this value to match your own repository!
 $githubUser = "matsest"
 
-# Add push credentials (only available to main branch)
+# Add push credentials (Azure-Push environment)
 New-AzADAppFederatedCredential -ApplicationObjectId $appPush.Id `
   -Name 'AcrPush' `
   -Audience 'api://AzureADTokenExchange' `
@@ -132,7 +132,7 @@ New-AzADAppFederatedCredential -ApplicationObjectId $appPush.Id `
   -Subject "repo:$githubUser/bicep-registry-demo:environment:Azure-Push" `
   -Description "Bicep Module Registry Demo - Push"
 
-# Add pull credentials (available to all branches)
+# Add pull credentials (Azure Environment)
 New-AzADAppFederatedCredential -ApplicationObjectId $appPull.Id `
   -Name 'AcrPull' `
   -Audience 'api://AzureADTokenExchange' `
@@ -156,8 +156,8 @@ $tenantId = (Get-AzContext).Subscription.TenantId
 # Continue if you have GitHub CLI
 gh secret set AZURE_TENANT_ID --body "$tenantId"
 gh secret set AZURE_SUBSCRIPTION_ID --body "$subscriptionId"
-gh secret set ACR_PUSH_CLIENT_ID --body "$pushClientId"
-gh secret set ACR_PULL_CLIENT_ID --body "$pullClientId"
+gh secret set ACR_PUSH_CLIENT_ID --body "$pushClientId" --env Azure-Push
+gh secret set ACR_PULL_CLIENT_ID --body "$pullClientId" --env Azure
 ```
 
 You should now have the following secrets present:

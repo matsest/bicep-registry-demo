@@ -2,6 +2,10 @@ name: Bicep Module Consume
 
 on:
   push:
+    branches:
+      - main
+    tags-ignore:
+      - '*'
     paths:
       - 3-consume/**.bicep
       - 3-consume/**.parameters.json
