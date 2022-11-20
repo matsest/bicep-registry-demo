@@ -9,6 +9,7 @@ on:
     paths:
       - 3-consume/**.bicep
       - 3-consume/**.parameters.json
+      - .github/workflows/bicep-consume.yml
   workflow_dispatch:
 
 permissions:
