@@ -8,7 +8,6 @@ on:
       - main
     paths:
       - 2-publish/**.bicep
-      - .github/workflows/bicep-publish.yml
   workflow_dispatch:
     inputs:
       version:

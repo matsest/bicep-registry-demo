@@ -35,6 +35,7 @@ if (!$Version) {
 }
 
 # Check out tag version
+Write-Host "Checking out version $Version"
 git checkout $Version
 
 # Read modules from modules directory
