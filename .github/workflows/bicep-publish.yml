@@ -22,6 +22,7 @@ permissions:
 
 jobs:
   publish:
+    environment: Azure-Push
     runs-on: ubuntu-latest
     steps:
       # Checkout code

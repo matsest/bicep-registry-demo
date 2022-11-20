@@ -129,7 +129,7 @@ New-AzADAppFederatedIdentityCredential -ApplicationObjectId $appPush.Id `
   -Name 'AcrPush' `
   -Audience 'api://AzureADTokenExchange' `
   -Issuer 'https://token.actions.githubusercontent.com' `
-  -Subject "repo:$githubUser/bicep-registry-demo:ref:refs/heads/main" `
+  -Subject "repo:$githubUser/bicep-registry-demo:environment:Azure-Push" `
   -Description "Bicep Module Registry Demo - Push"
 
 # Add pull credentials (available to all branches)
