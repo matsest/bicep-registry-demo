@@ -38,6 +38,8 @@ module containerapp 'br/demoRegistry:containerapp:1.1.0' = {
 output url string = containerapp.outputs.url
 ```
 
+> Note: The module reference should be automatically [restored](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-cli#restore) if you're using VS Code and the Bicep extension, but if you get validation errors you can manually run `bicep restore ./3-consume/main.bicep`.
+
 1. Valide the deployment by running the following command:
 
 ```powershell
