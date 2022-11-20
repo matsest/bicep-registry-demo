@@ -44,4 +44,4 @@ jobs:
 
       - name: Print Container Apps URL
         if: github.event_name == 'workflow_dispatch' || github.ref_name == 'main'
-        run: echo ${{ steps.deploy.outputs.url }}
+        run: echo "https://${{ steps.deploy.outputs.url }}"
