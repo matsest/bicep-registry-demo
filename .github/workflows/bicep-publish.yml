@@ -27,7 +27,7 @@ jobs:
       ACR_REGISTRY: ${{ secrets.ACR_REGISTRY }}
     steps:
       # Checkout code
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # get repo with tags
 
