@@ -37,7 +37,7 @@ jobs:
       - name: Deploy Container Apps
         if: github.event_name == 'workflow_dispatch' || github.ref_name == 'main'
         id: deploy
-        uses: azure/arm-deploy@v1
+        uses: azure/arm-deploy@v2
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: bicep-workload-demo
