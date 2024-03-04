@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 0 # get repo with tags
 
       - name: "Azure Login"
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.ACR_PUSH_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
